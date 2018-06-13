@@ -1,3 +1,4 @@
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashMap;
@@ -8,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         Constant.TOKEN = "3b894afd06ed0e15b56936749f825c2b";
         // 自行调用静态方法
-        login();
+        message_send();
     }
 
     // ******************** 用户 start  ******************** //
@@ -129,7 +130,15 @@ public class Main {
         map.put("timestamp", Util.getTimeStamp() + "");
         map.put("version", Constant.VERSION);
         map.put("uri", Constant.URI.MESSAGE_SEND);
-//        map.put("id", "3178");
+
+        Map<String,Object> message = new HashMap<>();
+        message.put("wxid","9660005773@chatroom");
+        message.put("messagetype","TXT");
+        Map<String,String> body = new HashMap<>();
+        body.put("txtcontent","测试，测试");
+        message.put("body",body);
+
+        map.put("message", JSON.toJSONString(message));
         map.put("sign", Util.getSign(map));
         JSONObject jsonObject = Util.post(Constant.IP + Constant.URI.MESSAGE_SEND, map);
         System.out.println(jsonObject.toString());
