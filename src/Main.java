@@ -7,9 +7,11 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        Constant.TOKEN = "3b894afd06ed0e15b56936749f825c2b";
+        //Constant.TOKEN = "3b894afd06ed0e15b56936749f825c2b";
+
+        login();
         // 自行调用静态方法
-        message_send();
+        message_send_file();
     }
 
     // ******************** 用户 start  ******************** //
@@ -21,12 +23,11 @@ public class Main {
         map.put("timestamp", Util.getTimeStamp() + "");
         map.put("version", Constant.VERSION);
         map.put("uri", Constant.URI.ACCOUNT_LOGIN);
-        map.put("username", "13800000000");
+        map.put("username", "13800000105");
         map.put("password", "123456");
         map.put("sign", Util.getSign(map));
         JSONObject jsonObject = Util.post(Constant.IP + Constant.URI.ACCOUNT_LOGIN, map);
         Constant.TOKEN = jsonObject.getString("result");
-
        // checkToken();
     }
 
@@ -143,6 +144,29 @@ public class Main {
         JSONObject jsonObject = Util.post(Constant.IP + Constant.URI.MESSAGE_SEND, map);
         System.out.println(jsonObject.toString());
     }
+
+    public static void message_send_file() {
+        Map<String, String> map = new HashMap<>();
+        map.put("appkey", Constant.APPKEY);
+        map.put("nonce", Util.getNonce());
+        map.put("timestamp", Util.getTimeStamp() + "");
+        map.put("version", Constant.VERSION);
+        map.put("uri", Constant.URI.MESSAGE_SEND);
+
+        Map<String,Object> message = new HashMap<>();
+        message.put("wxid","zivzhao");
+        message.put("messagetype","FILE");
+        Map<String,String> body = new HashMap<>();
+        body.put("filename","xxx.pid");
+        body.put("fileurl","https://reachpass.oss-cn-hangzhou.aliyuncs.com/file/test.pid");
+        message.put("body",body);
+
+        map.put("message", JSON.toJSONString(message));
+        map.put("sign", Util.getSign(map));
+        JSONObject jsonObject = Util.post(Constant.IP + Constant.URI.MESSAGE_SEND, map);
+        System.out.println(jsonObject.toString());
+    }
+
     // ******************** 消息 end  ******************** //
 
 
